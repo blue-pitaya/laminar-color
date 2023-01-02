@@ -1,0 +1,57 @@
+.saturation-white {
+  background: -webkit-linear-gradient(to right, #fff, rgba(255, 255, 255, 0));
+  background: linear-gradient(to right, #fff, rgba(255, 255, 255, 0));
+  display: grid;
+}
+.saturation-black {
+  background: -webkit-linear-gradient(to top, #000, rgba(0, 0, 0, 0));
+  background: linear-gradient(to top, #000, rgba(0, 0, 0, 0));
+  position: relative;
+  overflow: hidden;
+}
+
+.saturationColor {
+  display: grid;
+}
+
+.saturationWindow {
+  width: 200px;
+  height: 150px;
+  border: 1px solid black;
+  display: grid;
+}
+
+.circle {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  pointer: hand;
+  transform: translate(-2px, -2px);
+  border: 1px solid white;
+}
+
+.horizontalHue {
+  width: 200px;
+  height: 20px;
+  background: linear-gradient(
+    to right,
+    #f00 0%,
+    #ff0 17%,
+    #0f0 33%,
+    #0ff 50%,
+    #00f 67%,
+    #f0f 83%,
+    #f00 100%
+  );
+  background: -webkit-linear-gradient(
+    to right,
+    #f00 0%,
+    #ff0 17%,
+    #0f0 33%,
+    #0ff 50%,
+    #00f 67%,
+    #f0f 83%,
+    #f00 100%
+  );
+  border: 1px solid black;
+}
