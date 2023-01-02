@@ -4,7 +4,7 @@ import com.raquo.laminar.api.L._
 import org.scalajs.dom
 import com.raquo.laminar.nodes.ReactiveElement
 
-object DragLogic2 {
+object DragLogic {
   sealed trait DragEvent
   final case class DragStart(e: dom.PointerEvent, id: String) extends DragEvent
   final case class DragMove(e: dom.PointerEvent) extends DragEvent

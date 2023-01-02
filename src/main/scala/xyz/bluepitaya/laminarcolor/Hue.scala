@@ -17,7 +17,7 @@ object Hue {
   }
 
   def component(hsv: Var[ColorPicker.Hsv]) = {
-    val dragModule = DragLogic2.enableDraggingInDocument()
+    val dragModule = DragLogic.enableDraggingInDocument()
 
     div(
       cls("horizontalHue"),
@@ -25,10 +25,10 @@ object Hue {
         val docEvents = dragModule.docEvents
         val compEvents = dragModule.getComponentEvents(
           HtmlIdGenerator.ImpureRandomStringIdGenerator.randomId,
-          Observer[DragLogic2.DragEvent] {
-            case DragLogic2.DragEnd(e)      => ()
-            case DragLogic2.DragMove(e)     => pointerChange(e, el.ref, hsv)
-            case DragLogic2.DragStart(e, _) => pointerChange(e, el.ref, hsv)
+          Observer[DragLogic.DragEvent] {
+            case DragLogic.DragEnd(e)      => ()
+            case DragLogic.DragMove(e)     => pointerChange(e, el.ref, hsv)
+            case DragLogic.DragStart(e, _) => pointerChange(e, el.ref, hsv)
           }
         )
         Seq(docEvents, compEvents)

@@ -22,9 +22,9 @@ object ColorPicker {
     }
   }
 
-  def component = {
-    val hsv = Var[Hsv](Hsv(0, 0, 0))
-
-    div(Saturation.component(hsv), Hue.component(hsv), HexValue.component(hsv))
-  }
+  def createExample(hsvColor: Var[Hsv]) = div(
+    Saturation.component(hsvColor),
+    Hue.component(hsvColor),
+    ColorValue.rgbComponent(hsvColor)
+  )
 }
