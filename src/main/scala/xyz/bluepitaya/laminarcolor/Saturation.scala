@@ -20,7 +20,8 @@ object Saturation {
   def component(hsv: Var[ColorPicker.Hsv]) = {
     val dragModule = DragLogic.enableDraggingInDocument()
 
-    val pointerStyle = hsv.signal
+    val pointerStyle = hsv
+      .signal
       .map { x =>
         s"position: absolute;top: ${100 - (x.v * 100)}%;left: ${x.s * 100}%"
       }

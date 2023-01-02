@@ -12,8 +12,7 @@ object DragLogic {
 
   case class DocumentDraggingModule(
       docEvents: Seq[Binder[ReactiveElement.Base]],
-      // TODO: needs documentation beacuase hover shows v1, v2 and
-      // i dont know what it means
+      // TODO: documentation
       getComponentEvents: (
           String,
           Observer[DragEvent]
@@ -30,39 +29,44 @@ object DragLogic {
 
     val currentDragging = Var[Option[String]](None)
 
-    val bus = new EventBus[DragEvent]
-    val documentEventStream: EventStream[DragEvent] = bus.events
+    val documentEventBus = new EventBus[DragEvent]
+    val componentEventBus = new EventBus[DragEvent]
 
-    def startDragging(id: String): Unit = {
-      currentDragging.set(Some(id))
+    val dragEventBroadcast = Observer[DragEvent] { e =>
+      // order of emits is important here
+      documentEventBus.emit(e)
+      componentEventBus.emit(e)
     }
 
-    def resetDragging(): Unit = {
-      currentDragging.set(None)
-    }
+    val documentEventStream: EventStream[DragEvent] = documentEventBus.events
 
     val documentObserver = Observer[DragEvent] {
-      case DragStart(_, id) => startDragging(id)
-      case DragEnd(_)       => resetDragging()
+      case DragStart(_, id) => currentDragging.set(Some(id))
+      case DragEnd(_)       => currentDragging.set(None)
       case _                => ()
     }
 
-    def componentEventStream(id: String): EventStream[DragEvent] = bus.events
-      .filter { e =>
-        currentDragging.now() match {
-          case Some(x) if x == id => true
-          case _                  => false
+    def componentEventStream(id: String): EventStream[DragEvent] =
+      componentEventBus
+        .events
+        .filter { e =>
+          currentDragging.now() match {
+            case Some(x) if x == id => true
+            case _                  => false
+          }
         }
-      }
 
     val docEvents = Seq(
-      documentEvents.onPointerMove.map(e => DragMove(prepareEvent(e))) --> bus,
-      documentEvents.onPointerUp.map(e => DragEnd(prepareEvent(e))) --> bus,
+      documentEvents.onPointerMove.map(e => DragMove(prepareEvent(e))) -->
+        dragEventBroadcast,
+      documentEvents.onPointerUp.map(e => DragEnd(prepareEvent(e))) -->
+        dragEventBroadcast,
       documentEventStream --> documentObserver
     )
 
     def componentEvents(id: String, observer: Observer[DragEvent]) = Seq(
-      onPointerDown.map(e => DragStart(prepareEvent(e), id)) --> bus,
+      onPointerDown.map(e => DragStart(prepareEvent(e), id)) -->
+        dragEventBroadcast,
       componentEventStream(id) --> observer
     )
 
