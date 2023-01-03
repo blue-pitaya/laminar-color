@@ -18,16 +18,6 @@
   width: 200px;
   height: 150px;
   border: 1px solid black;
-  display: grid;
-}
-
-.circle {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  pointer: hand;
-  transform: translate(-2px, -2px);
-  border: 1px solid white;
 }
 
 .horizontalHue {
@@ -54,4 +44,8 @@
     #f00 100%
   );
   border: 1px solid black;
+}
+
+.chromePickerSaturationContainer {
+  height: 125px;
 }

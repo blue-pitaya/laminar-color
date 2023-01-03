@@ -3,6 +3,24 @@ package xyz.bluepitaya.laminarcolor
 import com.raquo.laminar.api.L._
 import org.scalajs.dom
 
+object SaturationStyles {
+  def toPxStr(v: Int) = s"${v}px"
+
+  def circle(widthInPx: Int, heightInPx: Int): Seq[Setter[HtmlElement]] = {
+    Seq(
+      width(toPxStr(widthInPx)),
+      height(toPxStr(heightInPx)),
+      borderRadius("50%"),
+      transform(
+        s"translate(${toPxStr(-widthInPx / 2)}, ${toPxStr(-heightInPx / 2)})"
+      ),
+      boxShadow("rgb(255 255 255) 0px 0px 0px 1px inset")
+    )
+  }
+
+  val circle4px = circle(4, 4)
+}
+
 object Saturation {
   def pointerChange(
       event: dom.PointerEvent,
@@ -17,19 +35,20 @@ object Saturation {
     hsv.update(v => v.copy(s = saturation, v = brightness))
   }
 
-  def component(hsv: Var[ColorPicker.Hsv]) = {
+  def component(
+      hsv: Var[ColorPicker.Hsv],
+      modifiers: Seq[Setter[HtmlElement]] = Seq(cls("saturationWindow")),
+      pointerStyle: Seq[Setter[HtmlElement]] = SaturationStyles.circle4px
+  ) = {
     val dragModule = DragLogic.enableDraggingInDocument()
 
-    val pointerStyle = hsv
-      .signal
-      .map { x =>
-        s"position: absolute;top: ${100 - (x.v * 100)}%;left: ${x.s * 100}%"
-      }
-
+    val pointerTopValue = hsv.signal.map(hsv => s"${100 - hsv.v * 100}%")
+    val pointerLeftValue = hsv.signal.map(hsv => s"${hsv.s * 100}%")
     val colorStyle = hsv.signal.map(v => s"background: hsl(${v.h} 100% 50%)")
 
     div(
-      cls("saturationWindow"),
+      modifiers,
+      display("grid"),
       div(
         cls("saturationColor"),
         styleAttr <-- colorStyle,
@@ -50,7 +69,12 @@ object Saturation {
               )
               Seq(docEvents, compEvents)
             },
-            div(cls("circle"), styleAttr <-- pointerStyle)
+            div(
+              position("absolute"),
+              top <-- pointerTopValue,
+              left <-- pointerLeftValue,
+              pointerStyle
+            )
           )
         )
       )
