@@ -34,4 +34,6 @@ object Util {
     val percentY = 1.0 - hsv.v
     Vec2f(percentX * componentSize.x, percentY * componentSize.y)
   }
+
+  def toPxStr(v: Int) = s"${v}px"
 }

@@ -2,6 +2,7 @@ package xyz.bluepitaya.laminarcolor
 
 import com.raquo.laminar.api.L._
 import org.scalajs.dom
+import Util.toPxStr
 
 object Hue {
   def pointerChange(
@@ -16,11 +17,22 @@ object Hue {
     hsv.update(v => v.copy(h = hue))
   }
 
-  def component(hsv: Var[ColorPicker.Hsv]) = {
+  def hueToCssLeftAttr(h: Double) = s"${(h / 360.0) * 100.0}%"
+
+  def component(hsv: Var[ColorPicker.Hsv], heightInPx: Int) = {
     val dragModule = DragLogic.enableDraggingInDocument()
+    val handler = Circles.filledCircle(heightInPx + 2, heightInPx + 2)
+
+    val circleLeftPositionSignal = hsv.signal.map(x => hueToCssLeftAttr(x.h))
 
     div(
       cls("horizontalHue"),
+      position.relative,
+      handler.amend(
+        position.absolute,
+        left <-- circleLeftPositionSignal,
+        top("50%")
+      ),
       inContext { el =>
         val docEvents = dragModule.docEvents
         val compEvents = dragModule.getComponentEvents(

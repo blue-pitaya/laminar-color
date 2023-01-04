@@ -21,10 +21,4 @@ object ColorPicker {
       s"rgb($r, $g, $b)"
     }
   }
-
-  def createExample(hsvColor: Var[Hsv]) = div(
-    Saturation.component(hsvColor),
-    Hue.component(hsvColor),
-    ColorValue.rgbComponent(hsvColor)
-  )
 }

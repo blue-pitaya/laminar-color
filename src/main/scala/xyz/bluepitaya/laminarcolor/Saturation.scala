@@ -3,24 +3,6 @@ package xyz.bluepitaya.laminarcolor
 import com.raquo.laminar.api.L._
 import org.scalajs.dom
 
-object SaturationStyles {
-  def toPxStr(v: Int) = s"${v}px"
-
-  def circle(widthInPx: Int, heightInPx: Int): Seq[Setter[HtmlElement]] = {
-    Seq(
-      width(toPxStr(widthInPx)),
-      height(toPxStr(heightInPx)),
-      borderRadius("50%"),
-      transform(
-        s"translate(${toPxStr(-widthInPx / 2)}, ${toPxStr(-heightInPx / 2)})"
-      ),
-      boxShadow("rgb(255 255 255) 0px 0px 0px 1px inset")
-    )
-  }
-
-  val circle4px = circle(4, 4)
-}
-
 object Saturation {
   def pointerChange(
       event: dom.PointerEvent,
@@ -38,7 +20,7 @@ object Saturation {
   def component(
       hsv: Var[ColorPicker.Hsv],
       modifiers: Seq[Setter[HtmlElement]] = Seq(cls("saturationWindow")),
-      pointerStyle: Seq[Setter[HtmlElement]] = SaturationStyles.circle4px
+      handler: HtmlElement
   ) = {
     val dragModule = DragLogic.enableDraggingInDocument()
 
@@ -69,11 +51,10 @@ object Saturation {
               )
               Seq(docEvents, compEvents)
             },
-            div(
+            handler.amend(
               position("absolute"),
               top <-- pointerTopValue,
-              left <-- pointerLeftValue,
-              pointerStyle
+              left <-- pointerLeftValue
             )
           )
         )

@@ -21,8 +21,8 @@
 }
 
 .horizontalHue {
-  width: 200px;
-  height: 20px;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(
     to right,
     #f00 0%,
@@ -43,9 +43,12 @@
     #f0f 83%,
     #f00 100%
   );
-  border: 1px solid black;
 }
 
 .chromePickerSaturationContainer {
   height: 125px;
+}
+
+html {
+  background-color: #cecece;
 }
