@@ -2,18 +2,14 @@ package xyz.bluepitaya.laminarcolor.pickers
 
 import com.raquo.laminar.api.L._
 import org.scalajs.dom
+import xyz.bluepitaya.laminarcolor.Circles
+import xyz.bluepitaya.laminarcolor.ColorField
 import xyz.bluepitaya.laminarcolor.ColorPicker
 import xyz.bluepitaya.laminarcolor.Saturation
-import xyz.bluepitaya.laminarcolor.ColorField
-import xyz.bluepitaya.laminarcolor.Circles
 import xyz.bluepitaya.laminarcolor.Sliders
 import xyz.bluepitaya.laminarcolor.TextFields
 
 object ChromePicker {
-  val saturationStyle = Seq(cls("chromePickerSaturationContainer"))
-
-  val saturationHandler = Circles.blankCircle(12, 12)
-
   def component(mColor: Var[ColorPicker.Hsv]) = {
     val colorField = ColorField
       .component(mColor, ColorField.lightBorderStyle ++ ColorField.circleStyle)
@@ -50,12 +46,14 @@ object ChromePicker {
         height("21px")
       )
 
+    val saturationHandler = Circles.blankCircle(12, 12)
+
     div(
       width("225px"),
       background("#fff"),
       borderRadius("2px"),
       boxShadow("rgb(0 0 0 / 30%) 0px 0px 2px, rgb(0 0 0 / 30%) 0px 4px 8px"),
-      Saturation.component(mColor, saturationStyle, saturationHandler),
+      Saturation.component(mColor, saturationHandler).amend(height("125px")),
       div(
         padding("16px 16px 12px"),
         div(display.flex, flexDirection.row, colorFiledComp, sliders),

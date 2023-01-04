@@ -48,7 +48,14 @@ object Sliders {
   private def hueToCssLeftAttr(h: Double) = s"${(h / 360.0) * 100.0}%"
 
   def hueComponent(color: Var[ColorPicker.Hsv], heightInPx: Int) = {
-    val background = div(position.absolute, cls("horizontalHue"))
+    val backgroundDiv = div(
+      position.absolute,
+      width("100%"),
+      height("100%"),
+      background(
+        "linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%)"
+      )
+    )
 
     def onSliderChange(xPercent: Double) = {
       val hue = xPercent * 360
@@ -60,7 +67,7 @@ object Sliders {
     baseComponent(
       circleLeftPositionSignal,
       heightInPx,
-      background,
+      backgroundDiv,
       onSliderChange
     )
   }

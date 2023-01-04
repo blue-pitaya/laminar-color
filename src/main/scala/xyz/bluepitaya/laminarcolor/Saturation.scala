@@ -17,27 +17,34 @@ object Saturation {
     hsv.update(v => v.copy(s = saturation, v = brightness))
   }
 
-  def component(
-      hsv: Var[ColorPicker.Hsv],
-      modifiers: Seq[Setter[HtmlElement]] = Seq(cls("saturationWindow")),
-      handler: HtmlElement
-  ) = {
+  // TODO: maybe relative/asbolute with inset
+  def whiteGradient = Seq(
+    display("grid"),
+    background("linear-gradient(to right, #fff, rgba(255, 255, 255, 0))")
+  )
+
+  def blackGradient = Seq(
+    position.relative,
+    overflow.hidden,
+    background("linear-gradient(to top, #000, rgba(0, 0, 0, 0))")
+  )
+
+  def component(hsv: Var[ColorPicker.Hsv], handler: HtmlElement) = {
     val dragModule = DragLogic.enableDraggingInDocument()
 
     val pointerTopValue = hsv.signal.map(hsv => s"${100 - hsv.v * 100}%")
     val pointerLeftValue = hsv.signal.map(hsv => s"${hsv.s * 100}%")
-    val colorStyle = hsv.signal.map(v => s"background: hsl(${v.h} 100% 50%)")
+    val colorStyle = hsv.signal.map(v => s"hsl(${v.h} 100% 50%)")
 
     div(
-      modifiers,
       display("grid"),
       div(
-        cls("saturationColor"),
-        styleAttr <-- colorStyle,
+        display("grid"),
+        background <-- colorStyle,
         div(
-          cls("saturation-white"),
+          whiteGradient,
           div(
-            cls("saturation-black"),
+            blackGradient,
             inContext { el =>
               val docEvents = dragModule.docEvents
               val compEvents = dragModule.getComponentEvents(
