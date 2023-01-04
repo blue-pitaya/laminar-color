@@ -36,4 +36,6 @@ object Util {
   }
 
   def toPxStr(v: Int) = s"${v}px"
+
+  def inset(v: String) = Seq(top(v), left(v), right(v), bottom(v))
 }

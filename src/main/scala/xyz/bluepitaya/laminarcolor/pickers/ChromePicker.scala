@@ -5,8 +5,8 @@ import org.scalajs.dom
 import xyz.bluepitaya.laminarcolor.ColorPicker
 import xyz.bluepitaya.laminarcolor.Saturation
 import xyz.bluepitaya.laminarcolor.ColorField
-import xyz.bluepitaya.laminarcolor.Hue
 import xyz.bluepitaya.laminarcolor.Circles
+import xyz.bluepitaya.laminarcolor.Sliders
 
 object ChromePicker {
   val saturationStyle = Seq(cls("chromePickerSaturationContainer"))
@@ -25,7 +25,11 @@ object ChromePicker {
         flexDirection.row,
         padding("16px 16px 12px"),
         div(width("16px"), height("16px"), marginRight("5px"), colorField),
-        div(width("100%"), Hue.component(color, 16))
+        div(
+          width("100%"),
+          Sliders.hueComponent(color, 16),
+          Sliders.alphaComponent(color, 16).amend(marginTop("10px"))
+        )
       )
     )
   }
