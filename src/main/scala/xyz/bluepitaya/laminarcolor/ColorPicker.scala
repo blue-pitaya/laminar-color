@@ -9,19 +9,18 @@ object ColorPicker {
   case class Rgba(r: Int, g: Int, b: Int, a: Double)
 
   case class Hsv(h: Double, s: Double, v: Double, a: Double) {
-    // input: h in [0,360] and s,v in [0,1] - output: r,g,b in [0,1]
-    //  let f= (n,k=(n+h/60)%6) => v - v*s*Math.max( Math.min(k,4-k,1), 0);
-    //  return [f(5),f(3),f(1)];
-
+    // https://stackoverflow.com/a/54024653
     def toRgba: Rgba = {
       def f(n: Double) = {
         val k = (n + h / 60) % 6
         v - v * s * Math.max(Math.min(Math.min(k, 4 - k), 1), 0)
       }
 
-      val r = (f(5) * 255).toInt
-      val g = (f(3) * 255).toInt
-      val b = (f(1) * 255).toInt
+      def c(v: Double) = Math.round(v * 255).toInt
+
+      val r = c(f(5))
+      val g = c(f(3))
+      val b = c(f(1))
 
       Rgba(r, g, b, a)
     }
@@ -39,6 +38,59 @@ object ColorPicker {
     def toCssRgbaTransparent: String = {
       val rgba = toRgba
       s"rgb(${rgba.r}, ${rgba.g}, ${rgba.b}, 0)"
+    }
+
+    def toHashedHexValue: String = {
+      val rgba = toRgba
+      f"#${rgba.r}%02X${rgba.g}%02X${rgba.b}%02X"
+    }
+  }
+
+  object Hsv {
+    // Taken from java.awt.Color.RGBtoHSB (rewrited to scala)
+    def fromRgb(red: Int, green: Int, blue: Int): Hsv = {
+      var h: Double = 0
+      var s: Double = 0
+      var v: Double = 0
+      // Calculate brightness.
+      var min: Double = 0;
+      var max: Double = 0;
+      if (red < green) {
+        min = red;
+        max = green;
+      } else {
+        min = green;
+        max = red;
+      }
+      if (blue > max) max = blue;
+      else if (blue < min) min = blue;
+      v = max / 255.0;
+      // Calculate saturation.
+      if (max == 0) s = 0;
+      else s = ((max - min) / max);
+      // Calculate hue.
+      if (s == 0) h = 0;
+      else {
+        var delta = (max - min) * 6;
+        if (red == max) h = (green - blue) / delta;
+        else if (green == max) h = 1.0 / 3 + (blue - red) / delta;
+        else h = 2.0 / 3 + (red - green) / delta;
+        if (h < 0) h = h + 1;
+      }
+
+      Hsv(h * 360.0, s, v, 1)
+    }
+
+    def fromHashedHexValue(v: String): Option[Hsv] = {
+      try {
+        val r = Integer.parseInt(v.slice(1, 3), 16)
+        val g = Integer.parseInt(v.slice(3, 5), 16)
+        val b = Integer.parseInt(v.slice(5, 7), 16)
+        Some(fromRgb(r, g, b))
+      } catch {
+        case _: Throwable => None
+      }
+
     }
   }
 }

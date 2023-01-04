@@ -7,6 +7,7 @@ import xyz.bluepitaya.laminarcolor.Saturation
 import xyz.bluepitaya.laminarcolor.ColorField
 import xyz.bluepitaya.laminarcolor.Circles
 import xyz.bluepitaya.laminarcolor.Sliders
+import xyz.bluepitaya.laminarcolor.TextFields
 
 object ChromePicker {
   val saturationStyle = Seq(cls("chromePickerSaturationContainer"))
@@ -30,7 +31,8 @@ object ChromePicker {
           Sliders.hueComponent(color, 16),
           Sliders.alphaComponent(color, 16).amend(marginTop("10px"))
         )
-      )
+      ),
+      div(TextFields.component(color))
     )
   }
 }

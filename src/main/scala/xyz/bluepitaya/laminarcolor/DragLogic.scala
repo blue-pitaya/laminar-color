@@ -20,13 +20,6 @@ object DragLogic {
   )
 
   def enableDraggingInDocument(): DocumentDraggingModule = {
-    // TODO: impure
-    def prepareEvent(e: dom.PointerEvent): dom.PointerEvent = {
-      e.preventDefault()
-      e.stopPropagation()
-      e
-    }
-
     val currentDragging = Var[Option[String]](None)
 
     val documentEventBus = new EventBus[DragEvent]
@@ -41,7 +34,7 @@ object DragLogic {
     val documentEventStream: EventStream[DragEvent] = documentEventBus.events
 
     val documentObserver = Observer[DragEvent] {
-      case DragStart(_, id) => currentDragging.set(Some(id))
+      case DragStart(e, id) => currentDragging.set(Some(id))
       case DragEnd(_)       => currentDragging.set(None)
       case _                => ()
     }
@@ -57,17 +50,27 @@ object DragLogic {
         }
 
     val docEvents = Seq(
-      documentEvents.onPointerMove.map(e => DragMove(prepareEvent(e))) -->
-        dragEventBroadcast,
-      documentEvents.onPointerUp.map(e => DragEnd(prepareEvent(e))) -->
-        dragEventBroadcast,
+      documentEvents.onPointerMove.map(e => DragMove(e)) --> dragEventBroadcast,
+      documentEvents.onPointerUp.map(e => DragEnd(e)) --> dragEventBroadcast,
       documentEventStream --> documentObserver
     )
 
     def componentEvents(id: String, observer: Observer[DragEvent]) = Seq(
-      onPointerDown.map(e => DragStart(prepareEvent(e), id)) -->
-        dragEventBroadcast,
-      componentEventStream(id) --> observer
+      onPointerDown.map(e => DragStart(e, id)) --> dragEventBroadcast,
+      componentEventStream(id).map { e =>
+        e match {
+          case DragStart(e, id) =>
+            e.preventDefault()
+            e.stopPropagation()
+          case DragMove(e) =>
+            e.preventDefault()
+            e.stopPropagation()
+          case DragEnd(e) =>
+            e.preventDefault()
+            e.stopPropagation()
+        }
+        e
+      } --> observer
     )
 
     DocumentDraggingModule(

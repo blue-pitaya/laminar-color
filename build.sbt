@@ -13,6 +13,7 @@ lazy val root = (project in file("."))
   .settings(
     name := "laminar-color",
     libraryDependencies += "com.raquo" %%% "laminar" % "0.14.5",
+    libraryDependencies += "org.scalatest" %%% "scalatest" % "3.2.13" % Test,
   )
   .enablePlugins(ScalaJSPlugin) 
 
