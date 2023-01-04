@@ -4,7 +4,8 @@ import com.raquo.laminar.api.L._
 import org.scalajs.dom
 
 object TextFields {
-  def component(color: Var[ColorPicker.Hsv]) = {
+  // FIXME: enable alpha on hex value
+  def hexField(color: Var[ColorPicker.Hsv]) = {
     val colorValue = Var(color.now().toHashedHexValue)
 
     input(
