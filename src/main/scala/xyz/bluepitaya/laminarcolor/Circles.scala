@@ -18,6 +18,13 @@ object Circles {
     circleBase(widthInPx, heightInPx)
       .amend(boxShadow("rgb(255 255 255) 0px 0px 0px 1px inset"))
 
+  def blankCircleSpecialShadow(widthInPx: Int, heightInPx: Int) =
+    circleBase(widthInPx, heightInPx).amend(
+      boxShadow(
+        "rgb(255 255 255) 0px 0px 0px 1.5px, rgb(0 0 0 / 30%) 0px 0px 1px 1px inset, rgb(0 0 0 / 40%) 0px 0px 1px 2px"
+      )
+    )
+
   def filledCircle(widthInPx: Int, heightInPx: Int) =
     circleBase(widthInPx, heightInPx).amend(
       backgroundColor("rgb(248, 248, 248)"),

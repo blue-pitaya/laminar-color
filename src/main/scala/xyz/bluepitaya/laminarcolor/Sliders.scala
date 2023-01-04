@@ -103,6 +103,7 @@ object Sliders {
         background <-- backgroundGradientSignal
       )
     )
+
     baseComponent(
       circleLeftPositionSignal,
       heightInPx,
