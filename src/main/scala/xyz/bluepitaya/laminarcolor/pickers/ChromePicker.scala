@@ -12,7 +12,8 @@ import xyz.bluepitaya.laminarcolor.TextFields
 object ChromePicker {
   def component(mColor: Var[ColorPicker.Hsv]) = {
     val colorField = ColorField
-      .component(mColor, ColorField.lightBorderStyle ++ ColorField.circleStyle)
+      .component(mColor)
+      .amend(ColorField.lightBorderStyle, ColorField.circleStyle)
 
     def handler = Circles.filledCircle(12, 12)
 

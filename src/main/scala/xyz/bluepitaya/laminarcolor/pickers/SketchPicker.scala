@@ -2,11 +2,12 @@ package xyz.bluepitaya.laminarcolor.pickers
 
 import com.raquo.laminar.api.L._
 import org.scalajs.dom
-import xyz.bluepitaya.laminarcolor.ColorPicker
-import xyz.bluepitaya.laminarcolor.Saturation
 import xyz.bluepitaya.laminarcolor.Circles
-import xyz.bluepitaya.laminarcolor.Sliders
 import xyz.bluepitaya.laminarcolor.ColorField
+import xyz.bluepitaya.laminarcolor.ColorPicker
+import xyz.bluepitaya.laminarcolor.Palette
+import xyz.bluepitaya.laminarcolor.Saturation
+import xyz.bluepitaya.laminarcolor.Sliders
 
 object SketchPicker {
   def component(color: Var[ColorPicker.Hsv]) = {
@@ -35,7 +36,14 @@ object SketchPicker {
     val colorFieldComp = div(
       minWidth("24px"), // TODO: hack
       height("24px"),
-      ColorField.component(color, ColorField.darkBorderStyle)
+      ColorField.component(color).amend(ColorField.darkBorderStyle)
+    )
+
+    def colorButton(c: ColorPicker.Hsv) = div(
+      width("16px"),
+      height("16px"),
+      padding("0px 10px 10px 0px"),
+      Palette.defaultColorButton(c, color)
     )
 
     div(
@@ -48,7 +56,15 @@ object SketchPicker {
         padding("4px 0px"),
         sliders,
         colorFieldComp
-      )
+      ),
+      Palette
+        .component(8, 2, ColorPicker.Hsv.sketchColors, colorButton)
+        // TODO: omg, copied from react color but this hack is too much for me
+        .amend(
+          position.relative,
+          margin("0px -10px"),
+          padding("10px 0px 0px 10px")
+        )
     )
   }
 }

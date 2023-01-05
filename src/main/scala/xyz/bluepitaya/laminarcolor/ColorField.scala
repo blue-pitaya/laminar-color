@@ -21,18 +21,18 @@ object ColorField {
 
   val circleStyle = Seq(borderRadius("50%"))
 
-  // TODO: remove modifiers
   /** Size of component is defined by parent div */
-  def component(
-      color: Var[ColorPicker.Hsv],
-      modifiers: Seq[Setter[HtmlElement]] = Seq()
-  ) = Seq(
-    div(
-      width("100%"),
-      height("100%"),
-      backgroundColor <-- color.signal.map(_.toCssRgb),
-      modifiers,
-      div(background(s"url('${TransparentImage.data}')"))
-    )
+  def component(color: Var[ColorPicker.Hsv]) = div(
+    width("100%"),
+    height("100%"),
+    backgroundColor <-- color.signal.map(_.toCssRgb),
+    div(background(s"url('${TransparentImage.data}')"))
+  )
+
+  def staticColorComponent(color: ColorPicker.Hsv) = div(
+    width("100%"),
+    height("100%"),
+    backgroundColor(color.toCssRgb),
+    div(background(s"url('${TransparentImage.data}')"))
   )
 }
