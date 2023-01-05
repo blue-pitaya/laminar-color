@@ -22,11 +22,14 @@ object SketchPicker {
 
     val saturationHandler = Circles.blankCircleSpecialShadow(4, 4)
 
+    // FIXME: handler should not go outside slider
+    def sliderHandler = Circles.rectangle(4, 8)
+
     val sliders = div(
       width("100%"),
       marginRight("4px"),
-      Sliders.hueComponent(color, 10).amend(marginBottom("4px")),
-      Sliders.alphaComponent(color, 10)
+      Sliders.hueComponent(color, 10, sliderHandler).amend(marginBottom("4px")),
+      Sliders.alphaComponent(color, 10, sliderHandler)
     )
 
     val colorFieldComp = div(

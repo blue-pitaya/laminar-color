@@ -15,10 +15,11 @@ object Sliders {
       heightInPx: Int,
       background: HtmlElement,
       // TODO: maybe event stream rather than callback?
-      sliderChange: Double => Unit
+      sliderChange: Double => Unit,
+      handler: HtmlElement
   ) = {
     val dragModule = DragLogic.enableDraggingInDocument()
-    val handler = Circles.filledCircle(heightInPx + 2, heightInPx + 2)
+    // val handler = Circles.filledCircle(heightInPx + 2, heightInPx + 2)
 
     div(
       position.relative,
@@ -47,7 +48,11 @@ object Sliders {
 
   private def hueToCssLeftAttr(h: Double) = s"${(h / 360.0) * 100.0}%"
 
-  def hueComponent(color: Var[ColorPicker.Hsv], heightInPx: Int) = {
+  def hueComponent(
+      color: Var[ColorPicker.Hsv],
+      heightInPx: Int,
+      handler: HtmlElement
+  ) = {
     val backgroundDiv = div(
       position.absolute,
       width("100%"),
@@ -68,13 +73,18 @@ object Sliders {
       circleLeftPositionSignal,
       heightInPx,
       backgroundDiv,
-      onSliderChange
+      onSliderChange,
+      handler
     )
   }
 
   private def alphaToCssLeftAttr(a: Double) = s"${a * 100.0}%"
 
-  def alphaComponent(color: Var[ColorPicker.Hsv], heightInPx: Int) = {
+  def alphaComponent(
+      color: Var[ColorPicker.Hsv],
+      heightInPx: Int,
+      handler: HtmlElement
+  ) = {
     val backgroundGradientSignal = color
       .signal
       .map(hsv =>
@@ -108,7 +118,8 @@ object Sliders {
       circleLeftPositionSignal,
       heightInPx,
       backgroundComponent,
-      onSliderChange
+      onSliderChange,
+      handler
     )
   }
 }

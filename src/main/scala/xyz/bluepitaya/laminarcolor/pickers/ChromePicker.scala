@@ -14,10 +14,12 @@ object ChromePicker {
     val colorField = ColorField
       .component(mColor, ColorField.lightBorderStyle ++ ColorField.circleStyle)
 
+    def handler = Circles.filledCircle(12, 12)
+
     val sliders = div(
       flex("1 1 0%"),
-      Sliders.hueComponent(mColor, 10).amend(marginBottom("8px")),
-      Sliders.alphaComponent(mColor, 10)
+      Sliders.hueComponent(mColor, 10, handler).amend(marginBottom("8px")),
+      Sliders.alphaComponent(mColor, 10, handler)
     )
 
     val colorFiledComp = div(
