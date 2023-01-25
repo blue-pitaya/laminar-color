@@ -5,8 +5,8 @@ import org.scalajs.dom
 
 object Palette {
   def defaultColorButton(
-      buttonColor: ColorPicker.Hsv,
-      color: Var[ColorPicker.Hsv]
+      buttonColor: Hsv,
+      color: Var[Hsv]
   ) = ColorField
     .staticColorComponent(buttonColor)
     .amend(
@@ -22,8 +22,8 @@ object Palette {
   def component(
       gridWidth: Int,
       gridHeight: Int,
-      colors: Seq[ColorPicker.Hsv],
-      getElement: ColorPicker.Hsv => HtmlElement
+      colors: Seq[Hsv],
+      getElement: Hsv => HtmlElement
   ) = {
     val colorButtons = colors.map(c => getElement(c))
 

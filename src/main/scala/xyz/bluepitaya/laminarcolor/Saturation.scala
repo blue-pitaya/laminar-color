@@ -7,7 +7,7 @@ object Saturation {
   def pointerChange(
       event: dom.PointerEvent,
       el: dom.Element,
-      hsv: Var[ColorPicker.Hsv]
+      hsv: Var[Hsv]
   ) = {
     val rect = el.getBoundingClientRect()
     val percentOffset = Util.getEventPositionPercent(event, rect)
@@ -29,7 +29,7 @@ object Saturation {
     background("linear-gradient(to top, #000, rgba(0, 0, 0, 0))")
   )
 
-  def component(hsv: Var[ColorPicker.Hsv], handler: HtmlElement) = {
+  def component(hsv: Var[Hsv], handler: HtmlElement) = {
     val dragModule = DragLogic.enableDraggingInDocument()
 
     val pointerTopValue = hsv.signal.map(hsv => s"${100 - hsv.v * 100}%")

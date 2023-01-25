@@ -27,7 +27,7 @@ object Util {
   }
 
   def getSelectorPositionFormHsv(
-      hsv: ColorPicker.Hsv,
+      hsv: Hsv,
       componentSize: Vec2f
   ): Vec2f = {
     val percentX = hsv.s

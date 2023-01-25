@@ -49,7 +49,7 @@ object Sliders {
   private def hueToCssLeftAttr(h: Double) = s"${(h / 360.0) * 100.0}%"
 
   def hueComponent(
-      color: Var[ColorPicker.Hsv],
+      color: Var[Hsv],
       heightInPx: Int,
       handler: HtmlElement
   ) = {
@@ -81,7 +81,7 @@ object Sliders {
   private def alphaToCssLeftAttr(a: Double) = s"${a * 100.0}%"
 
   def alphaComponent(
-      color: Var[ColorPicker.Hsv],
+      color: Var[Hsv],
       heightInPx: Int,
       handler: HtmlElement
   ) = {

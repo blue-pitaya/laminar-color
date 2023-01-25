@@ -9,7 +9,7 @@ class ColorPickerSpec extends AnyFlatSpec with Matchers {
       .zip((0 to 255))
       .zip(0 to 255)
       .map { case ((r, g), b) =>
-        val hsv = ColorPicker.Hsv.fromRgb(r, g, b)
+        val hsv = Hsv.fromRgb(r, g, b)
         val rgb = hsv.toRgba
 
         (r, g, b) shouldEqual (rgb.r, rgb.g, rgb.b)

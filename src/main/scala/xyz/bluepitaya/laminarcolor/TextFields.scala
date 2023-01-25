@@ -5,14 +5,14 @@ import org.scalajs.dom
 
 object TextFields {
   // FIXME: enable alpha on hex value
-  def hexField(color: Var[ColorPicker.Hsv]) = {
+  def hexField(color: Var[Hsv]) = {
     val colorValue = Var(color.now().toHashedHexValue)
 
     input(
       controlled(value <-- colorValue, onInput.mapToValue --> colorValue),
       // FIXME: change color if value is ok on input
-      onBlur.mapToValue.map(v => ColorPicker.Hsv.fromHashedHexValue(v)) -->
-        Observer[Option[ColorPicker.Hsv]] { v =>
+      onBlur.mapToValue.map(v => Hsv.fromHashedHexValue(v)) -->
+        Observer[Option[Hsv]] { v =>
           v match {
             case None => colorValue.set(color.now().toHashedHexValue)
             case Some(value) =>

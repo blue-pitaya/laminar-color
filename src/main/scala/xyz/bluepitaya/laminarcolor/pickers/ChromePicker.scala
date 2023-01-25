@@ -4,13 +4,13 @@ import com.raquo.laminar.api.L._
 import org.scalajs.dom
 import xyz.bluepitaya.laminarcolor.Circles
 import xyz.bluepitaya.laminarcolor.ColorField
-import xyz.bluepitaya.laminarcolor.ColorPicker
 import xyz.bluepitaya.laminarcolor.Saturation
 import xyz.bluepitaya.laminarcolor.Sliders
 import xyz.bluepitaya.laminarcolor.TextFields
+import xyz.bluepitaya.laminarcolor.Hsv
 
 object ChromePicker {
-  def component(mColor: Var[ColorPicker.Hsv]) = {
+  def component(mColor: Var[Hsv]) = {
     val colorField = ColorField
       .component(mColor)
       .amend(ColorField.lightBorderStyle, ColorField.circleStyle)
