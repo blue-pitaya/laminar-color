@@ -48,10 +48,8 @@ object Sliders {
 
   private def hueToCssLeftAttr(h: Double) = s"${(h / 360.0) * 100.0}%"
 
-  def hueComponent(
-      color: Var[Hsv],
-      heightInPx: Int,
-      handler: HtmlElement
+  def hueComponent[A](s: A, heightInPx: Int, handler: HtmlElement)(implicit
+      state: State[A]
   ) = {
     val backgroundDiv = div(
       position.absolute,
@@ -64,10 +62,12 @@ object Sliders {
 
     def onSliderChange(xPercent: Double) = {
       val hue = xPercent * 360
-      color.update(v => v.copy(h = hue))
+      state.updateHue(s, hue)
     }
 
-    val circleLeftPositionSignal = color.signal.map(x => hueToCssLeftAttr(x.h))
+    val circleLeftPositionSignal = state
+      .signal(s)
+      .map(x => hueToCssLeftAttr(x.h))
 
     baseComponent(
       circleLeftPositionSignal,
@@ -80,22 +80,19 @@ object Sliders {
 
   private def alphaToCssLeftAttr(a: Double) = s"${a * 100.0}%"
 
-  def alphaComponent(
-      color: Var[Hsv],
-      heightInPx: Int,
-      handler: HtmlElement
+  def alphaComponent[A](s: A, heightInPx: Int, handler: HtmlElement)(implicit
+      state: State[A]
   ) = {
-    val backgroundGradientSignal = color
-      .signal
+    val backgroundGradientSignal = state
+      .signal(s)
       .map(hsv =>
         s"linear-gradient(to right, ${hsv.toCssRgbaTransparent} 0%, ${hsv.toCssRgb} 100%)"
       )
 
-    def onSliderChange(xPercent: Double) = color
-      .update(v => v.copy(a = xPercent))
+    def onSliderChange(xPercent: Double) = state.updateAlpha(s, xPercent)
 
-    val circleLeftPositionSignal = color
-      .signal
+    val circleLeftPositionSignal = state
+      .signal(s)
       .map(x => alphaToCssLeftAttr(x.a))
 
     val backgroundComponent = div(

@@ -1,5 +1,8 @@
 package xyz.bluepitaya.laminarcolor
 
+import com.raquo.laminar.api.L._
+import org.scalajs.dom
+
 case class Hsv(h: Double, s: Double, v: Double, a: Double) {
   // https://stackoverflow.com/a/54024653
   def toRgba: Rgba = {

@@ -4,17 +4,15 @@ import com.raquo.laminar.api.L._
 import org.scalajs.dom
 
 object Saturation {
-  def pointerChange(
-      event: dom.PointerEvent,
-      el: dom.Element,
-      hsv: Var[Hsv]
+  def pointerChange[A](event: dom.PointerEvent, el: dom.Element, s: A)(implicit
+      state: State[A]
   ) = {
     val rect = el.getBoundingClientRect()
     val percentOffset = Util.getEventPositionPercent(event, rect)
     val saturation = percentOffset.x
     val brightness = percentOffset.y
 
-    hsv.update(v => v.copy(s = saturation, v = brightness))
+    state.updateSaturationAndBrigthness(s, saturation, brightness)
   }
 
   // TODO: maybe relative/asbolute with inset
@@ -29,12 +27,12 @@ object Saturation {
     background("linear-gradient(to top, #000, rgba(0, 0, 0, 0))")
   )
 
-  def component(hsv: Var[Hsv], handler: HtmlElement) = {
+  def component[A](s: A, handler: HtmlElement)(implicit state: State[A]) = {
     val dragModule = DragLogic.enableDraggingInDocument()
 
-    val pointerTopValue = hsv.signal.map(hsv => s"${100 - hsv.v * 100}%")
-    val pointerLeftValue = hsv.signal.map(hsv => s"${hsv.s * 100}%")
-    val colorStyle = hsv.signal.map(v => s"hsl(${v.h} 100% 50%)")
+    val pointerTopValue = state.signal(s).map(hsv => s"${100 - hsv.v * 100}%")
+    val pointerLeftValue = state.signal(s).map(hsv => s"${hsv.s * 100}%")
+    val colorStyle = state.signal(s).map(v => s"hsl(${v.h} 100% 50%)")
 
     div(
       display("grid"),
@@ -50,10 +48,9 @@ object Saturation {
               val compEvents = dragModule.getComponentEvents(
                 HtmlIdGenerator.ImpureRandomStringIdGenerator.randomId,
                 Observer[DragLogic.DragEvent] {
-                  case DragLogic.DragEnd(e)  => ()
-                  case DragLogic.DragMove(e) => pointerChange(e, el.ref, hsv)
-                  case DragLogic.DragStart(e, _) =>
-                    pointerChange(e, el.ref, hsv)
+                  case DragLogic.DragEnd(e)      => ()
+                  case DragLogic.DragMove(e)     => pointerChange(e, el.ref, s)
+                  case DragLogic.DragStart(e, _) => pointerChange(e, el.ref, s)
                 }
               )
               Seq(docEvents, compEvents)

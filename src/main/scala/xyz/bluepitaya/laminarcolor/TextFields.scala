@@ -5,8 +5,8 @@ import org.scalajs.dom
 
 object TextFields {
   // FIXME: enable alpha on hex value
-  def hexField(color: Var[Hsv]) = {
-    val colorValue = Var(color.now().toHashedHexValue)
+  def hexField[A](s: A)(implicit state: State[A]) = {
+    val colorValue = Var(state.now(s).toHashedHexValue)
 
     input(
       controlled(value <-- colorValue, onInput.mapToValue --> colorValue),
@@ -14,13 +14,13 @@ object TextFields {
       onBlur.mapToValue.map(v => Hsv.fromHashedHexValue(v)) -->
         Observer[Option[Hsv]] { v =>
           v match {
-            case None => colorValue.set(color.now().toHashedHexValue)
+            case None => colorValue.set(state.now(s).toHashedHexValue)
             case Some(value) =>
-              color.set(value)
-              colorValue.set(color.now().toHashedHexValue)
+              state.set(s, value)
+              colorValue.set(state.now(s).toHashedHexValue)
           }
         },
-      color.signal.map(_.toHashedHexValue) --> colorValue.writer
+      state.signal(s).map(_.toHashedHexValue) --> colorValue.writer
     )
   }
 }
