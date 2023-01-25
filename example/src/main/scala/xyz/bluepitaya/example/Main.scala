@@ -5,6 +5,7 @@ import org.scalajs.dom
 import xyz.bluepitaya.laminarcolor.ColorPicker
 import xyz.bluepitaya.laminarcolor.pickers.ChromePicker
 import xyz.bluepitaya.laminarcolor.pickers.SketchPicker
+import xyz.bluepitaya.laminarcolor.pickers.SimplePicker
 
 object Main extends App {
   val hsvColor = Var(ColorPicker.Hsv(200, 0.75, 0.75, 1))
@@ -15,7 +16,8 @@ object Main extends App {
       display.flex,
       flexDirection.row,
       ChromePicker.component(hsvColor),
-      SketchPicker.component(hsvColor).amend(marginLeft("30px"))
+      SketchPicker.component(hsvColor).amend(marginLeft("30px")),
+      SimplePicker.component(hsvColor).amend(marginLeft("30px"))
     )
   )
 

@@ -27,8 +27,17 @@ object DragLogic {
 
     val dragEventBroadcast = Observer[DragEvent] { e =>
       // order of emits is important here
-      documentEventBus.emit(e)
-      componentEventBus.emit(e)
+      e match {
+        case ev @ DragStart(e, id) =>
+          documentEventBus.emit(ev)
+          componentEventBus.emit(ev)
+        case ev @ DragMove(e) =>
+          documentEventBus.emit(ev)
+          componentEventBus.emit(ev)
+        case ev @ DragEnd(e) =>
+          componentEventBus.emit(ev)
+          documentEventBus.emit(ev)
+      }
     }
 
     val documentEventStream: EventStream[DragEvent] = documentEventBus.events

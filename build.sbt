@@ -5,7 +5,14 @@ import org.scalajs.linker.interface.ModuleSplitStyle
 lazy val baseSettings = Seq(
   organization := "xyz.bluepitaya",
   scalaVersion := "2.13.8",
-  version := "0.1"
+  version := "1.0"
+)
+
+val publishing = Seq(
+  // publishing
+  publishMavenStyle := true,
+  Test / publishArtifact := false,
+  pomIncludeRepository := (_ ⇒ false),
 )
 
 lazy val root = (project in file("."))
@@ -14,6 +21,7 @@ lazy val root = (project in file("."))
     name := "laminar-color",
     libraryDependencies += "com.raquo" %%% "laminar" % "0.14.5",
     libraryDependencies += "org.scalatest" %%% "scalatest" % "3.2.13" % Test,
+    publishing
   )
   .enablePlugins(ScalaJSPlugin) 
 
