@@ -5,8 +5,8 @@ import org.scalajs.dom
 import xyz.bluepitaya.laminarcolor.pickers.ChromePicker
 import xyz.bluepitaya.laminarcolor.pickers.SketchPicker
 import xyz.bluepitaya.laminarcolor.pickers.SimplePicker
-import xyz.bluepitaya.laminarcolor.Hsv
 import xyz.bluepitaya.laminarcolor.State
+import xyz.bluepitaya.common.Hsv
 
 object Main extends App {
   val hsvColor = Var(Hsv(200, 0.75, 0.75, 1))

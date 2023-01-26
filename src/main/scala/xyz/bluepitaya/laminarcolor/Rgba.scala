@@ -1,4 +1,4 @@
-package xyz.bluepitaya.laminarcolor
+//package xyz.bluepitaya.laminarcolor
 
 /** alpha is 0..1 */
-case class Rgba(r: Int, g: Int, b: Int, a: Double)
+//case class Rgba(r: Int, g: Int, b: Int, a: Double)

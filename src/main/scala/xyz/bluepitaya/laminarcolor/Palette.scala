@@ -1,7 +1,7 @@
 package xyz.bluepitaya.laminarcolor
 
 import com.raquo.laminar.api.L._
-import org.scalajs.dom
+import xyz.bluepitaya.common.Hsv
 
 object Palette {
   def defaultColorButton[A](s: A, buttonColor: Hsv)(implicit state: State[A]) =

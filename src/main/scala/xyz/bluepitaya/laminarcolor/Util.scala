@@ -1,6 +1,7 @@
 package xyz.bluepitaya.laminarcolor
 
 import com.raquo.laminar.api.L._
+import xyz.bluepitaya.common.Hsv
 import org.scalajs.dom
 import xyz.bluepitaya.laminarcolor.Vec2f
 
@@ -26,10 +27,7 @@ object Util {
     Vec2f(normX / w, 1 - (normY / h))
   }
 
-  def getSelectorPositionFormHsv(
-      hsv: Hsv,
-      componentSize: Vec2f
-  ): Vec2f = {
+  def getSelectorPositionFormHsv(hsv: Hsv, componentSize: Vec2f): Vec2f = {
     val percentX = hsv.s
     val percentY = 1.0 - hsv.v
     Vec2f(percentX * componentSize.x, percentY * componentSize.y)

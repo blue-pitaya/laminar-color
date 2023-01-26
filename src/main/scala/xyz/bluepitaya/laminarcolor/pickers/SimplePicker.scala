@@ -1,13 +1,10 @@
 package xyz.bluepitaya.laminarcolor.pickers
 
 import com.raquo.laminar.api.L._
-import org.scalajs.dom
 import xyz.bluepitaya.laminarcolor.Circles
 import xyz.bluepitaya.laminarcolor.ColorField
-import xyz.bluepitaya.laminarcolor.Palette
 import xyz.bluepitaya.laminarcolor.Saturation
 import xyz.bluepitaya.laminarcolor.Sliders
-import xyz.bluepitaya.laminarcolor.Hsv
 import xyz.bluepitaya.laminarcolor.State
 
 object SimplePicker {
@@ -40,13 +37,6 @@ object SimplePicker {
       ColorField
         .component(s)
         .amend(ColorField.darkBorderStyle, ColorField.circleStyle)
-    )
-
-    def colorButton(c: Hsv) = div(
-      width("16px"),
-      height("16px"),
-      padding("0px 10px 10px 0px"),
-      Palette.defaultColorButton(s, c)
     )
 
     div(
