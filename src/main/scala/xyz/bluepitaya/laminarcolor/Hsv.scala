@@ -39,6 +39,18 @@ case class Hsv(h: Double, s: Double, v: Double, a: Double) {
     val rgba = toRgba
     f"#${rgba.r}%02X${rgba.g}%02X${rgba.b}%02X"
   }
+
+  def toCssHsl: String = {
+    var l = (2 - s) * v / 2;
+    val _s = l match {
+      case _l if l == 0   => 0
+      case _l if l == 1.0 => 0
+      case _l if l < 0.5  => s * v / (l * 2)
+      case _l             => s * v / (2 - l * 2)
+    }
+
+    s"hsl($h ${"%.2f".format(_s * 100)} ${"%.2f".format(l * 100)})"
+  }
 }
 
 object Hsv {
@@ -105,4 +117,6 @@ object Hsv {
     "#9B9B9B",
     "#FFFFFF"
   ).map(fromHashedHexValue).flatten
+
+  def white = Hsv.fromRgb(255, 255, 255)
 }
