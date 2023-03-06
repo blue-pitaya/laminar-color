@@ -59,8 +59,9 @@ object DragLogic {
         }
 
     val docEvents = Seq(
-      documentEvents.onPointerMove.map(e => DragMove(e)) --> dragEventBroadcast,
-      documentEvents.onPointerUp.map(e => DragEnd(e)) --> dragEventBroadcast,
+      documentEvents(_.onPointerMove).map(e => DragMove(e)) -->
+        dragEventBroadcast,
+      documentEvents(_.onPointerUp).map(e => DragEnd(e)) --> dragEventBroadcast,
       documentEventStream --> documentObserver
     )
 

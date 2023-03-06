@@ -12,22 +12,23 @@ val publishing = Seq(
   // publishing
   publishMavenStyle := true,
   Test / publishArtifact := false,
-  pomIncludeRepository := (_ ⇒ false),
+  pomIncludeRepository := (_ ⇒ false)
 )
 
 lazy val root = (project in file("."))
   .settings(baseSettings)
   .settings(
     name := "laminar-color",
-    scalacOptions := Seq(
-      //"-Xlint"
-    ),
+    scalacOptions :=
+      Seq(
+        // "-Xlint"
+      ),
     libraryDependencies += "xyz.bluepitaya" %%% "common-utils" % "1.0",
-    libraryDependencies += "com.raquo" %%% "laminar" % "0.14.5",
+    libraryDependencies += "com.raquo" %%% "laminar" % "15.0.0-M7",
     libraryDependencies += "org.scalatest" %%% "scalatest" % "3.2.13" % Test,
     publishing
   )
-  .enablePlugins(ScalaJSPlugin) 
+  .enablePlugins(ScalaJSPlugin)
 
 lazy val example = (project in file("example"))
   .dependsOn(root)
@@ -45,7 +46,4 @@ lazy val example = (project in file("example"))
     Compile / fullLinkJS / scalaJSLinkerOutputDirectory :=
       baseDirectory.value / "ui/sccode/"
   )
-  .enablePlugins(ScalaJSPlugin) 
-
-
-// See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
+  .enablePlugins(ScalaJSPlugin)
