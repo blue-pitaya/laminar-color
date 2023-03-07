@@ -3,7 +3,7 @@ package xyz.bluepitaya.laminarcolor
 import com.raquo.laminar.api.L._
 import xyz.bluepitaya.common.Hsv
 import org.scalajs.dom
-import xyz.bluepitaya.laminarcolor.Vec2f
+import xyz.bluepitaya.common.Vec2f
 
 object Util {
   def getEventPositionPercent(
