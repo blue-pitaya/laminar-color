@@ -1,14 +1,14 @@
 package xyz.bluepitaya.laminarcolor.pickers
 
 import com.raquo.laminar.api.L._
+import xyz.bluepitaya.common.Hsv
 import xyz.bluepitaya.laminarcolor.Circles
 import xyz.bluepitaya.laminarcolor.ColorField
 import xyz.bluepitaya.laminarcolor.Saturation
 import xyz.bluepitaya.laminarcolor.Sliders
-import xyz.bluepitaya.laminarcolor.State
 
 object SimplePicker {
-  def component[A](s: A)(implicit state: State[A]) = {
+  def component(colorSignal: Signal[Hsv], onColorChanged: Observer[Hsv]) = {
     val containerStyle = Seq(
       width("200px"),
       height("fit-content"),
@@ -28,20 +28,22 @@ object SimplePicker {
       width("100%"),
       marginLeft("8px"),
       alignSelf.center,
-      Sliders.hueComponent(s, 10, sliderHandler)
+      Sliders.hueComponent(10, sliderHandler, colorSignal, onColorChanged)
     )
 
     val colorFieldComp = div(
       minWidth("20px"), // TODO: hack
       height("20px"),
       ColorField
-        .component(s)
+        .component(colorSignal)
         .amend(ColorField.darkBorderStyle, ColorField.circleStyle)
     )
 
     div(
       containerStyle,
-      Saturation.component(s, saturationHandler).amend(height("150px")),
+      Saturation
+        .component(saturationHandler, colorSignal, onColorChanged)
+        .amend(height("150px")),
       div(
         display.flex,
         flexDirection.row,

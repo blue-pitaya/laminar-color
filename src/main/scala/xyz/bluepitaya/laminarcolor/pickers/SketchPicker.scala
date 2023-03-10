@@ -7,10 +7,9 @@ import xyz.bluepitaya.laminarcolor.ColorField
 import xyz.bluepitaya.laminarcolor.Palette
 import xyz.bluepitaya.laminarcolor.Saturation
 import xyz.bluepitaya.laminarcolor.Sliders
-import xyz.bluepitaya.laminarcolor.State
 
 object SketchPicker {
-  def component[A](s: A)(implicit state: State[A]) = {
+  def component(colorSignal: Signal[Hsv], onColorChanged: Observer[Hsv]) = {
     val containerStyle = Seq(
       width("200px"),
       padding("10px 10px  0px"),
@@ -29,26 +28,30 @@ object SketchPicker {
     val sliders = div(
       width("100%"),
       marginRight("4px"),
-      Sliders.hueComponent(s, 10, sliderHandler).amend(marginBottom("4px")),
-      Sliders.alphaComponent(s, 10, sliderHandler)
+      Sliders
+        .hueComponent(10, sliderHandler, colorSignal, onColorChanged)
+        .amend(marginBottom("4px")),
+      Sliders.alphaComponent(10, sliderHandler, colorSignal, onColorChanged)
     )
 
     val colorFieldComp = div(
       minWidth("24px"), // TODO: hack
       height("24px"),
-      ColorField.component(s).amend(ColorField.darkBorderStyle)
+      ColorField.component(colorSignal).amend(ColorField.darkBorderStyle)
     )
 
     def colorButton(c: Hsv) = div(
       width("16px"),
       height("16px"),
       padding("0px 10px 10px 0px"),
-      Palette.defaultColorButton(s, c)
+      Palette.defaultColorButton(c, onColorChanged)
     )
 
     div(
       containerStyle,
-      Saturation.component(s, saturationHandler).amend(height("150px")),
+      Saturation
+        .component(saturationHandler, colorSignal, onColorChanged)
+        .amend(height("150px")),
       div(
         display.flex,
         flexDirection.row,

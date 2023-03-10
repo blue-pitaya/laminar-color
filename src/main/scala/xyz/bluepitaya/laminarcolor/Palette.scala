@@ -4,7 +4,7 @@ import com.raquo.laminar.api.L._
 import xyz.bluepitaya.common.Hsv
 
 object Palette {
-  def defaultColorButton[A](s: A, buttonColor: Hsv)(implicit state: State[A]) =
+  def defaultColorButton(buttonColor: Hsv, onColorChanged: Observer[Hsv]) =
     ColorField
       .staticColorComponent(buttonColor)
       .amend(
@@ -14,10 +14,7 @@ object Palette {
         outline("none"),
         borderRadius("3px"),
         boxShadow("rgb(0 0 0 / 15%) 0px 0px 0px 1px inset"),
-        onClick.map(_ => buttonColor) -->
-          Observer[Hsv] { x =>
-            state.set(s, x)
-          }
+        onClick.mapTo(buttonColor) --> onColorChanged
       )
 
   def component(

@@ -5,21 +5,23 @@ import xyz.bluepitaya.laminarcolor.Circles
 import xyz.bluepitaya.laminarcolor.ColorField
 import xyz.bluepitaya.laminarcolor.Saturation
 import xyz.bluepitaya.laminarcolor.Sliders
-import xyz.bluepitaya.laminarcolor.State
 import xyz.bluepitaya.laminarcolor.TextFields
+import xyz.bluepitaya.common.Hsv
 
 object ChromePicker {
-  def component[A](s: A)(implicit state: State[A]) = {
+  def component(colorSignal: Signal[Hsv], onColorChanged: Observer[Hsv]) = {
     val colorField = ColorField
-      .component(s)
+      .component(colorSignal)
       .amend(ColorField.lightBorderStyle, ColorField.circleStyle)
 
     def handler = Circles.filledCircle(12, 12)
 
     val sliders = div(
       flex("1 1 0%"),
-      Sliders.hueComponent(s, 10, handler).amend(marginBottom("8px")),
-      Sliders.alphaComponent(s, 10, handler)
+      Sliders
+        .hueComponent(10, handler, colorSignal, onColorChanged)
+        .amend(marginBottom("8px")),
+      Sliders.alphaComponent(10, handler, colorSignal, onColorChanged)
     )
 
     val colorFiledComp = div(
@@ -34,7 +36,7 @@ object ChromePicker {
     )
 
     val hexInput = TextFields
-      .hexField(s)
+      .hexField(colorSignal, onColorChanged)
       .amend(
         spellCheck(false),
         boxSizing.borderBox,
@@ -55,7 +57,9 @@ object ChromePicker {
       background("#fff"),
       borderRadius("2px"),
       boxShadow("rgb(0 0 0 / 30%) 0px 0px 2px, rgb(0 0 0 / 30%) 0px 4px 8px"),
-      Saturation.component(s, saturationHandler).amend(height("125px")),
+      Saturation
+        .component(saturationHandler, colorSignal, onColorChanged)
+        .amend(height("125px")),
       div(
         padding("16px 16px 12px"),
         div(display.flex, flexDirection.row, colorFiledComp, sliders),

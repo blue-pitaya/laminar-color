@@ -24,6 +24,7 @@ lazy val root = (project in file("."))
         // "-Xlint"
       ),
     libraryDependencies += "xyz.bluepitaya" %%% "common-utils" % "1.0",
+    libraryDependencies += "xyz.bluepitaya" %%% "laminar-dragging" % "1.0",
     libraryDependencies += "com.raquo" %%% "laminar" % "15.0.0-M7",
     libraryDependencies += "org.scalatest" %%% "scalatest" % "3.2.13" % Test,
     publishing

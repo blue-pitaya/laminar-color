@@ -22,10 +22,10 @@ object ColorField {
   val circleStyle = Seq(borderRadius("50%"))
 
   /** Size of component is defined by parent div */
-  def component[A](s: A)(implicit state: State[A]) = div(
+  def component(colorSignal: Signal[Hsv]) = div(
     width("100%"),
     height("100%"),
-    backgroundColor <-- state.signal(s).map(_.toCssRgb),
+    backgroundColor <-- colorSignal.map(_.toCssRgb),
     div(background(s"url('${TransparentImage.data}')"))
   )
 

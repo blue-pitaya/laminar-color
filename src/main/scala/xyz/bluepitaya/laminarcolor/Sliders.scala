@@ -3,53 +3,17 @@ package xyz.bluepitaya.laminarcolor
 import com.raquo.laminar.api.L._
 import org.scalajs.dom
 import Util._
+import xyz.bluepitaya.laminardragging.Dragging
+import xyz.bluepitaya.common.Hsv
+import xyz.bluepitaya.laminardragging.Dragging.DragStart
+import xyz.bluepitaya.laminardragging.Dragging.DragMove
 
 object Sliders {
-  private def getSliderXPercent(event: dom.PointerEvent, el: dom.Element) = {
-    val rect = el.getBoundingClientRect()
-    Util.getEventPositionPercent(event, rect).x
-  }
-
-  private def baseComponent(
-      cssLeftPositionSignal: Signal[String],
+  def hueComponent(
       heightInPx: Int,
-      background: HtmlElement,
-      // TODO: maybe event stream rather than callback?
-      sliderChange: Double => Unit,
-      handler: HtmlElement
-  ) = {
-    val dragModule = DragLogic.enableDraggingInDocument()
-    // val handler = Circles.filledCircle(heightInPx + 2, heightInPx + 2)
-
-    div(
-      position.relative,
-      height(Util.toPxStr(heightInPx)),
-      background,
-      handler
-        .amend(position.absolute, left <-- cssLeftPositionSignal, top("50%")),
-      inContext { el =>
-        val docEvents = dragModule.docEvents
-        val compEvents = dragModule.getComponentEvents(
-          HtmlIdGenerator.ImpureRandomStringIdGenerator.randomId,
-          Observer[DragLogic.DragEvent] {
-            case DragLogic.DragEnd(e) => ()
-            case DragLogic.DragMove(e) =>
-              val xPercent = getSliderXPercent(e, el.ref)
-              sliderChange(xPercent)
-            case DragLogic.DragStart(e, _) =>
-              val xPercent = getSliderXPercent(e, el.ref)
-              sliderChange(xPercent)
-          }
-        )
-        Seq(docEvents, compEvents)
-      }
-    )
-  }
-
-  private def hueToCssLeftAttr(h: Double) = s"${(h / 360.0) * 100.0}%"
-
-  def hueComponent[A](s: A, heightInPx: Int, handler: HtmlElement)(implicit
-      state: State[A]
+      handler: HtmlElement,
+      colorSignal: Signal[Hsv],
+      onColorChanged: Observer[Hsv]
   ) = {
     val backgroundDiv = div(
       position.absolute,
@@ -60,42 +24,46 @@ object Sliders {
       )
     )
 
-    def onSliderChange(xPercent: Double) = {
-      val hue = xPercent * 360
-      state.updateHue(s, hue)
-    }
+    val circleLeftPositionSignal = colorSignal.map(c => hueToCssLeftAttr(c.h))
 
-    val circleLeftPositionSignal = state
-      .signal(s)
-      .map(x => hueToCssLeftAttr(x.h))
+    val baseBindings = getBaseBindings(
+      cssLeftPositionSignal = circleLeftPositionSignal,
+      heightInPx = heightInPx,
+      background = backgroundDiv,
+      handler = handler
+    )
+    val (draggingBindings, dragEvents) = getDraggingLogic()
 
-    baseComponent(
-      circleLeftPositionSignal,
-      heightInPx,
-      backgroundDiv,
-      onSliderChange,
-      handler
+    div(
+      baseBindings,
+      draggingBindings,
+      inContext { ctx =>
+        dragEvents
+          .collect {
+            case DragStart(e) => getSliderXPercent(e, ctx.ref)
+            case DragMove(e)  => getSliderXPercent(e, ctx.ref)
+          }
+          .withCurrentValueOf(colorSignal)
+          .map { case (xPercent, color) =>
+            val hue = xPercent * 360
+            color.copy(h = hue)
+          } --> onColorChanged
+      }
     )
   }
 
-  private def alphaToCssLeftAttr(a: Double) = s"${a * 100.0}%"
-
-  def alphaComponent[A](s: A, heightInPx: Int, handler: HtmlElement)(implicit
-      state: State[A]
+  def alphaComponent[A](
+      heightInPx: Int,
+      handler: HtmlElement,
+      colorSignal: Signal[Hsv],
+      onColorChanged: Observer[Hsv]
   ) = {
-    val backgroundGradientSignal = state
-      .signal(s)
-      .map(hsv =>
-        s"linear-gradient(to right, ${hsv.toCssRgbaTransparent} 0%, ${hsv.toCssRgb} 100%)"
-      )
+    val backgroundGradientSignal = colorSignal.map(c =>
+      s"linear-gradient(to right, ${c.toCssRgbaTransparent} 0%, ${c.toCssRgb} 100%)"
+    )
+    val circleLeftPositionSignal = colorSignal.map(c => alphaToCssLeftAttr(c.a))
 
-    def onSliderChange(xPercent: Double) = state.updateAlpha(s, xPercent)
-
-    val circleLeftPositionSignal = state
-      .signal(s)
-      .map(x => alphaToCssLeftAttr(x.a))
-
-    val backgroundComponent = div(
+    val backgroundDiv = div(
       position.absolute,
       inset("0"),
       overflow.hidden,
@@ -111,12 +79,60 @@ object Sliders {
       )
     )
 
-    baseComponent(
-      circleLeftPositionSignal,
-      heightInPx,
-      backgroundComponent,
-      onSliderChange,
-      handler
+    val baseBindings = getBaseBindings(
+      cssLeftPositionSignal = circleLeftPositionSignal,
+      heightInPx = heightInPx,
+      background = backgroundDiv,
+      handler = handler
     )
+    val (draggingBindings, dragEvents) = getDraggingLogic()
+
+    div(
+      baseBindings,
+      draggingBindings,
+      inContext { ctx =>
+        dragEvents
+          .collect {
+            case DragStart(e) => getSliderXPercent(e, ctx.ref)
+            case DragMove(e)  => getSliderXPercent(e, ctx.ref)
+          }
+          .withCurrentValueOf(colorSignal)
+          .map { case (xPercent, color) =>
+            color.copy(a = xPercent)
+          } --> onColorChanged
+      }
+    )
+  }
+
+  private def alphaToCssLeftAttr(a: Double) = s"${a * 100.0}%"
+
+  private def hueToCssLeftAttr(h: Double) = s"${(h / 360.0) * 100.0}%"
+
+  private def getSliderXPercent(event: dom.PointerEvent, el: dom.Element) = {
+    val rect = el.getBoundingClientRect()
+    Util.getEventPositionPercent(event, rect).x
+  }
+
+  private def getBaseBindings(
+      cssLeftPositionSignal: Signal[String],
+      heightInPx: Int,
+      background: HtmlElement,
+      handler: HtmlElement
+  ) = Seq(
+    position.relative,
+    height(Util.toPxStr(heightInPx)),
+    background,
+    handler.amend(position.absolute, left <-- cssLeftPositionSignal, top("50%"))
+  )
+
+  private def getDraggingLogic() = {
+    val draggingId = "slider"
+    val draggingModule = Dragging.createModule()
+    val bindings = Seq(
+      draggingModule.documentBindings,
+      draggingModule.componentBindings(draggingId)
+    )
+
+    (bindings, draggingModule.componentEvents(draggingId))
   }
 }
