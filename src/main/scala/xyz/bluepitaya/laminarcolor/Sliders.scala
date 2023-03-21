@@ -127,7 +127,7 @@ object Sliders {
 
   private def getDraggingLogic() = {
     val draggingId = "slider"
-    val draggingModule = Dragging.createModule()
+    val draggingModule = Dragging.createModule[String]()
     val bindings = Seq(
       draggingModule.documentBindings,
       draggingModule.componentBindings(draggingId)

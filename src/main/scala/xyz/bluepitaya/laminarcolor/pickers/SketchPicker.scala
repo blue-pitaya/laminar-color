@@ -11,8 +11,9 @@ import xyz.bluepitaya.laminarcolor.Sliders
 object SketchPicker {
   def component(colorSignal: Signal[Hsv], onColorChanged: Observer[Hsv]) = {
     val containerStyle = Seq(
-      width("200px"),
-      padding("10px 10px  0px"),
+      boxSizing.borderBox,
+      width("220px"),
+      padding("10px 10px 0px"),
       backgroundColor("#fff"),
       borderRadius("4px"),
       boxShadow(
@@ -41,9 +42,10 @@ object SketchPicker {
     )
 
     def colorButton(c: Hsv) = div(
+      boxSizing.borderBox,
       width("16px"),
       height("16px"),
-      padding("0px 10px 10px 0px"),
+      margin("0px 10px 10px 0px"),
       Palette.defaultColorButton(c, onColorChanged)
     )
 

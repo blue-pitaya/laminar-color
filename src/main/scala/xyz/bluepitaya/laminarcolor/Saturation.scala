@@ -14,7 +14,7 @@ object Saturation {
       colorSignal: Signal[Hsv],
       onColorChanged: Observer[Hsv]
   ) = {
-    val draggingModule = Dragging.createModule()
+    val draggingModule = Dragging.createModule[String]()
 
     val pointerTopValue = colorSignal.map(hsv => s"${100 - hsv.v * 100}%")
     val pointerLeftValue = colorSignal.map(hsv => s"${hsv.s * 100}%")
