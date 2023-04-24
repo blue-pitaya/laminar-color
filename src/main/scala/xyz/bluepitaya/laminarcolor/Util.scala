@@ -6,8 +6,6 @@ import org.scalajs.dom
 import xyz.bluepitaya.laminardragging.Vec2f
 
 object Util {
-  // TODO: will it work ok, on resizing?
-  // FIXME: use laminar_dragging solution
   def getEventPositionPercent(
       event: dom.PointerEvent,
       rect: dom.DOMRect
