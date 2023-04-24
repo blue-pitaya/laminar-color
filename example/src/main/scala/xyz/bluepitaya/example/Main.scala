@@ -10,7 +10,6 @@ import com.raquo.laminar.nodes.ReactiveHtmlElement
 
 object Main extends App {
   val color = Var(Hsv(200, 0.75, 0.75, 1))
-
   val hslValueSignal = color.signal.map(_.toCssHsl)
   val rgbaValueSignal = color.signal.map(_.toCssRgba)
 
