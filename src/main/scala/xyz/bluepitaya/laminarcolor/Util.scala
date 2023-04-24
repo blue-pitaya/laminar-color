@@ -1,11 +1,13 @@
 package xyz.bluepitaya.laminarcolor
 
 import com.raquo.laminar.api.L._
-import xyz.bluepitaya.common.Hsv
+import xyz.bluepitaya.laminarcolor.models.Hsv
 import org.scalajs.dom
-import xyz.bluepitaya.common.Vec2f
+import xyz.bluepitaya.laminardragging.Vec2f
 
 object Util {
+  // TODO: will it work ok, on resizing?
+  // FIXME: use laminar_dragging solution
   def getEventPositionPercent(
       event: dom.PointerEvent,
       rect: dom.DOMRect

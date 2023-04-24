@@ -2,7 +2,7 @@ package xyz.bluepitaya.example
 
 import com.raquo.laminar.api.L._
 import org.scalajs.dom
-import xyz.bluepitaya.common.Hsv
+import xyz.bluepitaya.laminarcolor.models.Hsv
 import xyz.bluepitaya.laminarcolor.pickers.ChromePicker
 import xyz.bluepitaya.laminarcolor.pickers.SimplePicker
 import xyz.bluepitaya.laminarcolor.pickers.SketchPicker

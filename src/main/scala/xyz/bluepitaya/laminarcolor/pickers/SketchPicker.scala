@@ -1,7 +1,7 @@
 package xyz.bluepitaya.laminarcolor.pickers
 
 import com.raquo.laminar.api.L._
-import xyz.bluepitaya.common.Hsv
+import xyz.bluepitaya.laminarcolor.models.Hsv
 import xyz.bluepitaya.laminarcolor.Circles
 import xyz.bluepitaya.laminarcolor.ColorField
 import xyz.bluepitaya.laminarcolor.Palette

@@ -4,9 +4,8 @@ import com.raquo.laminar.api.L._
 import org.scalajs.dom
 import Util._
 import xyz.bluepitaya.laminardragging.Dragging
-import xyz.bluepitaya.common.Hsv
-import xyz.bluepitaya.laminardragging.Dragging.DragStart
-import xyz.bluepitaya.laminardragging.Dragging.DragMove
+import xyz.bluepitaya.laminarcolor.models.Hsv
+import xyz.bluepitaya.laminardragging.DragEventKind
 
 object Sliders {
   def hueComponent(
@@ -40,8 +39,10 @@ object Sliders {
       inContext { ctx =>
         dragEvents
           .collect {
-            case DragStart(e) => getSliderXPercent(e, ctx.ref)
-            case DragMove(e)  => getSliderXPercent(e, ctx.ref)
+            case Dragging.Event(e, DragEventKind.Start) =>
+              getSliderXPercent(e, ctx.ref)
+            case Dragging.Event(e, DragEventKind.Move) =>
+              getSliderXPercent(e, ctx.ref)
           }
           .withCurrentValueOf(colorSignal)
           .map { case (xPercent, color) =>
@@ -93,8 +94,10 @@ object Sliders {
       inContext { ctx =>
         dragEvents
           .collect {
-            case DragStart(e) => getSliderXPercent(e, ctx.ref)
-            case DragMove(e)  => getSliderXPercent(e, ctx.ref)
+            case Dragging.Event(e, DragEventKind.Start) =>
+              getSliderXPercent(e, ctx.ref)
+            case Dragging.Event(e, DragEventKind.Move) =>
+              getSliderXPercent(e, ctx.ref)
           }
           .withCurrentValueOf(colorSignal)
           .map { case (xPercent, color) =>

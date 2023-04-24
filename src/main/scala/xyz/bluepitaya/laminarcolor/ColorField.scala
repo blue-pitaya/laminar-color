@@ -1,7 +1,7 @@
 package xyz.bluepitaya.laminarcolor
 
 import com.raquo.laminar.api.L._
-import xyz.bluepitaya.common.Hsv
+import xyz.bluepitaya.laminarcolor.models.Hsv
 
 object TransparentImage {
   def data =

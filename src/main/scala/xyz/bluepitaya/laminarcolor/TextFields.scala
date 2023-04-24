@@ -1,13 +1,12 @@
 package xyz.bluepitaya.laminarcolor
 
 import com.raquo.laminar.api.L._
-import xyz.bluepitaya.common.Hsv
+import xyz.bluepitaya.laminarcolor.models.Hsv
 
 object TextFields {
   // FIXME: enable alpha on hex value
   def hexField(colorSignal: Signal[Hsv], onColorChanged: Observer[Hsv]) = {
     val colorValue = Var("")
-    val bus: EventBus[Hsv] = new EventBus
 
     input(
       controlled(value <-- colorValue, onInput.mapToValue --> colorValue),

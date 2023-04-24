@@ -6,7 +6,7 @@ import xyz.bluepitaya.laminarcolor.ColorField
 import xyz.bluepitaya.laminarcolor.Saturation
 import xyz.bluepitaya.laminarcolor.Sliders
 import xyz.bluepitaya.laminarcolor.TextFields
-import xyz.bluepitaya.common.Hsv
+import xyz.bluepitaya.laminarcolor.models.Hsv
 
 object ChromePicker {
   def component(colorSignal: Signal[Hsv], onColorChanged: Observer[Hsv]) = {

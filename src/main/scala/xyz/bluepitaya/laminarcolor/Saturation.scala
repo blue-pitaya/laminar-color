@@ -2,11 +2,9 @@ package xyz.bluepitaya.laminarcolor
 
 import com.raquo.laminar.api.L._
 import org.scalajs.dom
-import xyz.bluepitaya.common.Hsv
+import xyz.bluepitaya.laminarcolor.models.Hsv
 import xyz.bluepitaya.laminardragging.Dragging
-import xyz.bluepitaya.laminardragging.Dragging.DragEnd
-import xyz.bluepitaya.laminardragging.Dragging.DragMove
-import xyz.bluepitaya.laminardragging.Dragging.DragStart
+import xyz.bluepitaya.laminardragging.DragEventKind
 
 object Saturation {
   def component(
@@ -36,8 +34,10 @@ object Saturation {
                 .componentEvents("saturation")
                 .withCurrentValueOf(colorSignal)
                 .collect {
-                  case (DragStart(e), color) => pointerChange(e, el.ref, color)
-                  case (DragMove(e), color)  => pointerChange(e, el.ref, color)
+                  case (Dragging.Event(e, DragEventKind.Start), color) =>
+                    pointerChange(e, el.ref, color)
+                  case (Dragging.Event(e, DragEventKind.Move), color) =>
+                    pointerChange(e, el.ref, color)
                 } --> onColorChanged
             },
             handler.amend(
