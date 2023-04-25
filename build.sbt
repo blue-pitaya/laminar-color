@@ -20,7 +20,7 @@ lazy val root = (project in file("."))
   .settings(
     name := "laminar-color",
     scalacOptions := Seq("-Xlint"),
-    libraryDependencies += "xyz.bluepitaya" %%% "laminar-dragging" % "1.0",
+    libraryDependencies += "dev.bluepitaya" %%% "laminar-dragging" % "1.0",
     libraryDependencies += "com.raquo" %%% "laminar" % "15.0.0-M7",
     libraryDependencies += "org.scalatest" %%% "scalatest" % "3.2.13" % Test,
     publishing

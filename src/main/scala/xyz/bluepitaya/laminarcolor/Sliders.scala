@@ -3,9 +3,9 @@ package xyz.bluepitaya.laminarcolor
 import com.raquo.laminar.api.L._
 import org.scalajs.dom
 import Util._
-import xyz.bluepitaya.laminardragging.Dragging
 import xyz.bluepitaya.laminarcolor.models.Hsv
-import xyz.bluepitaya.laminardragging.DragEventKind
+import dev.bluepitaya.laminardragging.Dragging
+import dev.bluepitaya.laminardragging.DragEventKind
 
 object Sliders {
   def hueComponent(
