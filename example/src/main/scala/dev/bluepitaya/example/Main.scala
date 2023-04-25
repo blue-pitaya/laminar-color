@@ -1,11 +1,11 @@
-package xyz.bluepitaya.example
+package dev.bluepitaya.example
 
 import com.raquo.laminar.api.L._
 import org.scalajs.dom
-import xyz.bluepitaya.laminarcolor.models.Hsv
-import xyz.bluepitaya.laminarcolor.pickers.ChromePicker
-import xyz.bluepitaya.laminarcolor.pickers.SimplePicker
-import xyz.bluepitaya.laminarcolor.pickers.SketchPicker
+import dev.bluepitaya.laminarcolor.models.Hsv
+import dev.bluepitaya.laminarcolor.pickers.ChromePicker
+import dev.bluepitaya.laminarcolor.pickers.SimplePicker
+import dev.bluepitaya.laminarcolor.pickers.SketchPicker
 import com.raquo.laminar.nodes.ReactiveHtmlElement
 
 object Main extends App {

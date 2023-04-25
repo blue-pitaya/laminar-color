@@ -1,8 +1,8 @@
-package xyz.bluepitaya.laminarcolor
+package dev.bluepitaya.laminarcolor
 
 import com.raquo.laminar.api.L._
 import org.scalajs.dom
-import xyz.bluepitaya.laminarcolor.models.Hsv
+import dev.bluepitaya.laminarcolor.models.Hsv
 import dev.bluepitaya.laminardragging.Dragging
 import dev.bluepitaya.laminardragging.DragEventKind
 

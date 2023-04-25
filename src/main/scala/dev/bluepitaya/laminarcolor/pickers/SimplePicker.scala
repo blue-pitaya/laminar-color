@@ -1,11 +1,11 @@
-package xyz.bluepitaya.laminarcolor.pickers
+package dev.bluepitaya.laminarcolor.pickers
 
 import com.raquo.laminar.api.L._
-import xyz.bluepitaya.laminarcolor.models.Hsv
-import xyz.bluepitaya.laminarcolor.Circles
-import xyz.bluepitaya.laminarcolor.ColorField
-import xyz.bluepitaya.laminarcolor.Saturation
-import xyz.bluepitaya.laminarcolor.Sliders
+import dev.bluepitaya.laminarcolor.models.Hsv
+import dev.bluepitaya.laminarcolor.Circles
+import dev.bluepitaya.laminarcolor.ColorField
+import dev.bluepitaya.laminarcolor.Saturation
+import dev.bluepitaya.laminarcolor.Sliders
 
 object SimplePicker {
   def component(colorSignal: Signal[Hsv], onColorChanged: Observer[Hsv]) = {

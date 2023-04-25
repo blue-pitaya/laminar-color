@@ -1,6 +1,6 @@
-package xyz.bluepitaya.laminarcolor.models
+package dev.bluepitaya.laminarcolor.models
 
-package xyz.bluepitaya.common
+package dev.bluepitaya.common
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

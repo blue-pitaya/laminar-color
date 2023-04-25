@@ -8,7 +8,9 @@ See [demo](https://blue-pitaya.github.io/laminar-color/).
 
 ## Instalation
 
-Currently library isn't published anywhere, but it will change soon.
+```scala
+libraryDependencies += "dev.bluepitaya" %%% "laminar-color" % "1.0"
+```
 
 ## Usage
 

@@ -1,4 +1,4 @@
-package xyz.bluepitaya.laminarcolor
+package dev.bluepitaya.laminarcolor
 
 import com.raquo.laminar.api.L._
 

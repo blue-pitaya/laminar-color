@@ -2,28 +2,47 @@ import org.scalajs.linker.interface.ESVersion
 import org.scalajs.linker.interface.OutputPatterns
 import org.scalajs.linker.interface.ModuleSplitStyle
 
-lazy val baseSettings = Seq(
-  organization := "xyz.bluepitaya",
-  scalaVersion := "2.13.8",
-  version := "1.0"
+lazy val publishSettings = Seq(
+  organization := "dev.bluepitaya",
+  organizationName := "blue.pitaya",
+  organizationHomepage := Some(url("https://bluepitaya.dev")),
+  scmInfo :=
+    Some(
+      ScmInfo(
+        url("https://github.com/blue-pitaya/laminar-color"),
+        "scm:git@github.com:blue-pitaya/laminar-color.git"
+      )
+    ),
+  developers :=
+    List(
+      Developer(
+        id = "blue.pitaya",
+        name = "blue.pitaya",
+        email = "blue.pitaya@pm.me",
+        url = url("https://bluepitaya.dev")
+      )
+    ),
+  licenses := List(License.MIT),
+  homepage := Some(url("https://bluepitaya.dev")),
+  description := "Fully customizable color pickers for Laminar library.",
+  // Remove all additional repository other than Maven Central from POM
+  pomIncludeRepository := { _ =>
+    false
+  },
+  publishMavenStyle := true
 )
 
-val publishing = Seq(
-  // publishing
-  publishMavenStyle := true,
-  Test / publishArtifact := false,
-  pomIncludeRepository := (_ ⇒ false)
-)
+lazy val baseSettings = Seq(scalaVersion := "2.13.8", version := "1.0")
 
 lazy val root = (project in file("."))
   .settings(baseSettings)
+  .settings(publishSettings)
   .settings(
     name := "laminar-color",
     scalacOptions := Seq("-Xlint"),
     libraryDependencies += "dev.bluepitaya" %%% "laminar-dragging" % "1.0",
     libraryDependencies += "com.raquo" %%% "laminar" % "15.0.0-M7",
-    libraryDependencies += "org.scalatest" %%% "scalatest" % "3.2.13" % Test,
-    publishing
+    libraryDependencies += "org.scalatest" %%% "scalatest" % "3.2.13" % Test
   )
   .enablePlugins(ScalaJSPlugin)
 
