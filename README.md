@@ -8,8 +8,10 @@ See [demo](https://blue-pitaya.github.io/laminar-color/).
 
 ## Instalation
 
+For Laminar 16:
+
 ```scala
-libraryDependencies += "dev.bluepitaya" %%% "laminar-color" % "1.0"
+libraryDependencies += "dev.bluepitaya" %%% "laminar-color" % "1.1"
 ```
 
 ## Usage

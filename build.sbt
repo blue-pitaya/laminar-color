@@ -38,7 +38,7 @@ lazy val publishSettings = Seq(
   }
 )
 
-lazy val baseSettings = Seq(scalaVersion := "2.13.8", version := "1.0")
+lazy val baseSettings = Seq(scalaVersion := "2.13.8", version := "1.1")
 
 lazy val root = (project in file("."))
   .settings(baseSettings)
@@ -46,8 +46,8 @@ lazy val root = (project in file("."))
   .settings(
     name := "laminar-color",
     scalacOptions := Seq("-Xlint"),
-    libraryDependencies += "dev.bluepitaya" %%% "laminar-dragging" % "1.0",
-    libraryDependencies += "com.raquo" %%% "laminar" % "15.0.0-M7",
+    libraryDependencies += "dev.bluepitaya" %%% "laminar-dragging" % "1.1",
+    libraryDependencies += "com.raquo" %%% "laminar" % "16.0.0",
     libraryDependencies += "org.scalatest" %%% "scalatest" % "3.2.13" % Test
   )
   .enablePlugins(ScalaJSPlugin)
